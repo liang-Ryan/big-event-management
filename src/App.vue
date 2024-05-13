@@ -1,8 +1,13 @@
-<script setup></script>
+<script setup>
+// Store
+import { useUserStore } from '@/stores'
+const userStore = useUserStore()
+</script>
 
 <template>
   <div>app</div>
-  <el-button>test</el-button>
+  <div>{{ userStore.token }}</div>
+  <el-button @click="console.log(userStore.token)">test</el-button>
 </template>
 
 <style scoped></style>
