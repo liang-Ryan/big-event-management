@@ -1,3 +1,6 @@
+// css
+import '@/assets/main.scss'
+
 // 通用
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -9,5 +12,4 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
-
 app.mount('#app')
