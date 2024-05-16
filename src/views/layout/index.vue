@@ -1,9 +1,8 @@
 <script setup></script>
 
 <template>
-  <div>
-    <router-view></router-view>
-  </div>
+  layout页
+  <router-view></router-view>
 </template>
 
 <style scoped></style>

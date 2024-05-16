@@ -17,22 +17,23 @@ instance.interceptors.request.use(
       config.headers.Authorization = userStore.token
     }
 
-    return config.data
+    return config
   },
   (err) => Promise.reject(err)
 )
 
 // 响应拦截器
 instance.interceptors.response.use(
-  (res) => {
+  (response) => {
     // 响应成功判断
-    if (res.code === 0) {
-      return res
+    if (response.data.code === 0) {
+      ElMessage.success(response.data.message || '操作成功')
+      return response
     }
 
     // 响应错误处理
-    ElMessage.error(res.message || '请求错误')
-    return Promise.reject(res)
+    ElMessage.error(response.data.message || '请求错误')
+    return Promise.reject(response)
   },
   (err) => {
     // 错误特殊情况（权限不足）
