@@ -27,7 +27,6 @@ instance.interceptors.response.use(
   (response) => {
     // 响应成功判断
     if (response.data.code === 0) {
-      ElMessage.success(response.data.message || '操作成功')
       return response
     }
 

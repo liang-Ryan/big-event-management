@@ -32,7 +32,7 @@ module.exports = {
   },
   globals: {
     // 配置全局变量名
-    ElMessage: 'readonly',
+    ElMessage: 'readonly'
     // ElMessageBox: 'readonly',
     // ElLoading: 'readonly'
   }

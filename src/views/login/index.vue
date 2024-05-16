@@ -2,29 +2,44 @@
 // ==================================================
 
 // 通用
-import { ref } from 'vue'
-import { userRegisterService } from '@/api/user'
+import { ref, watch, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores'
+import { userRegisterService, userLoginService } from '@/api/user'
 
 // 组件
 import { User, Lock } from '@element-plus/icons-vue'
 
+// 注册
+const router = useRouter()
+const userStore = useUserStore()
+
 // ==================================================
 
-const isRegister = ref(false) // 切换注册和登录
+// 切换注册和登录
+const isRegister = ref(false)
+watch(isRegister, () => {
+  formData.value = {
+    username: '',
+    password: '',
+    repassword: ''
+  }
+})
 
 // ==================================================
 
 // 获取表单实例
 const form = ref()
-
-// 注册表单数据
-const registerForm = ref({
+// 表单数据
+const formData = ref({
   username: '',
   password: '',
   repassword: ''
 })
 
-// 表单校验规则
+// ==================================================
+
+// 注册校验规则
 const registerRules = {
   username: [
     { required: true, message: '用户名不能为空', trigger: 'blur' }, // 非空校验
@@ -44,7 +59,7 @@ const registerRules = {
     {
       // 密码二次验证
       validator: (rule, value, callback) => {
-        if (value !== registerForm.value.password) {
+        if (value !== formData.value.password) {
           callback(new Error('两次输入的密码不一致'))
         } else {
           callback() // 校验成功
@@ -54,32 +69,47 @@ const registerRules = {
     }
   ]
 }
-
 // 提交注册申请
 const register = async () => {
   await form.value.validate()
-  await userRegisterService(registerForm.value)
+
+  const {
+    data: { message }
+  } = await userRegisterService(formData.value)
+  ElMessage.success(message)
+
   isRegister.value = false
 }
 
 // ==================================================
 
-// 登录表单数据
-const loginForm = ref({
-  username: '',
-  password: ''
-})
-
-// ==================================================
-
-// 表单校验规则
+// 登录校验规则
 const loginRules = {
-  // username: [
-  //   { required: true, message: '用户名不能为空', trigger: 'blur' } // 非空校验
-  // ],
-  // password: [{ require: truge, message: '密码不能为空', trigger: 'blur' }]
+  username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
+  password: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
 }
 
+// 提交登录申请
+let loginTimeout = ref(null)
+
+const login = async () => {
+  await form.value.validate()
+
+  const {
+    data: { message, token }
+  } = await userLoginService(formData.value)
+  ElMessage.success(message)
+  userStore.setToken(token)
+
+  loginTimeout.value = setTimeout(() => {
+    router.push('/')
+  }, 1000)
+}
+onUnmounted(() => {
+  if (loginTimeout.value) {
+    clearTimeout(loginTimeout.value)
+  }
+})
 // ==================================================
 </script>
 
@@ -93,7 +123,7 @@ const loginRules = {
       <el-col :span="6" :offset="3" class="form">
         <!-- 注册页面 -->
         <el-form
-          :model="registerForm"
+          :model="formData"
           :rules="registerRules"
           ref="form"
           size="large"
@@ -108,7 +138,7 @@ const loginRules = {
             <el-input
               :prefix-icon="User"
               placeholder="请输入用户名"
-              v-model="registerForm.username"
+              v-model="formData.username"
             ></el-input>
           </el-form-item>
 
@@ -117,7 +147,7 @@ const loginRules = {
               :prefix-icon="Lock"
               type="password"
               placeholder="请输入密码"
-              v-model="registerForm.password"
+              v-model="formData.password"
             ></el-input>
           </el-form-item>
 
@@ -126,7 +156,7 @@ const loginRules = {
               :prefix-icon="Lock"
               type="password"
               placeholder="请输入再次密码"
-              v-model="registerForm.repassword"
+              v-model="formData.repassword"
             ></el-input>
           </el-form-item>
 
@@ -135,7 +165,7 @@ const loginRules = {
               class="button"
               type="primary"
               auto-insert-space
-              @click="register()"
+              @click="register"
             >
               注册
             </el-button>
@@ -150,7 +180,7 @@ const loginRules = {
 
         <!-- 登录页面 -->
         <el-form
-          :model="loginForm"
+          :model="formData"
           :rules="loginRules"
           ref="form"
           size="large"
@@ -165,7 +195,7 @@ const loginRules = {
             <el-input
               :prefix-icon="User"
               placeholder="请输入用户名"
-              v-model="loginForm.username"
+              v-model="formData.username"
             ></el-input>
           </el-form-item>
 
@@ -175,7 +205,7 @@ const loginRules = {
               :prefix-icon="Lock"
               type="password"
               placeholder="请输入密码"
-              v-model="loginForm.password"
+              v-model="formData.password"
             ></el-input>
           </el-form-item>
 
@@ -187,7 +217,12 @@ const loginRules = {
           </el-form-item>
 
           <el-form-item>
-            <el-button class="button" type="primary" auto-insert-space>
+            <el-button
+              class="button"
+              type="primary"
+              auto-insert-space
+              @click="login"
+            >
               登录
             </el-button>
           </el-form-item>
