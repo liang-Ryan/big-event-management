@@ -1,6 +1,13 @@
+// =================    导入    =====================
+
 import { createRouter, createWebHistory } from 'vue-router'
 // history模式：createWebHistory
 // hash模式：createHashHistory
+import { useUserStore } from '@/stores'
+
+// ==================================================
+// 路由配置
+// ==================================================
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,5 +42,15 @@ const router = createRouter({
     }
   ]
 })
+
+// 路由前置守卫
+router.beforeEach((to) => {
+  const userStore = useUserStore()
+  if (!userStore.token && to.path !== '/login') return '/login'
+})
+
+// ==================================================
+// 导出
+// ==================================================
 
 export default router

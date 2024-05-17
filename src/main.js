@@ -5,11 +5,11 @@ import '@/assets/main.scss'
 import { createApp } from 'vue'
 import App from './App.vue'
 
-// pinia
-import pinia from '@/stores/index'
-
 // router
 import router from './router'
+
+// pinia
+import pinia from '@/stores/index'
 
 const app = createApp(App)
 

@@ -1,6 +1,4 @@
 <script setup>
-// ==================================================
-
 // 通用
 import { ref, watch, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -14,9 +12,10 @@ import { User, Lock } from '@element-plus/icons-vue'
 const router = useRouter()
 const userStore = useUserStore()
 
-// ==================================================
-
+// =================================================
 // 切换注册和登录
+// =================================================
+
 const isRegister = ref(false)
 watch(isRegister, () => {
   formData.value = {
@@ -26,10 +25,13 @@ watch(isRegister, () => {
   }
 })
 
-// ==================================================
+// =================================================
+// 数据
+// =================================================
 
 // 获取表单实例
 const form = ref()
+
 // 表单数据
 const formData = ref({
   username: '',
@@ -37,7 +39,9 @@ const formData = ref({
   repassword: ''
 })
 
-// ==================================================
+// =================================================
+// 注册
+// =================================================
 
 // 注册校验规则
 const registerRules = {
@@ -81,7 +85,9 @@ const register = async () => {
   isRegister.value = false
 }
 
-// ==================================================
+// =================================================
+// 登录
+// =================================================
 
 // 登录校验规则
 const loginRules = {
@@ -91,6 +97,9 @@ const loginRules = {
 
 // 提交登录申请
 let loginTimeout = ref(null)
+onUnmounted(() => {
+  if (loginTimeout.value) clearTimeout(loginTimeout.value)
+})
 
 const login = async () => {
   await form.value.validate()
@@ -105,12 +114,9 @@ const login = async () => {
     router.push('/')
   }, 1000)
 }
-onUnmounted(() => {
-  if (loginTimeout.value) {
-    clearTimeout(loginTimeout.value)
-  }
-})
-// ==================================================
+
+// =================================================
+// =================================================
 </script>
 
 <template>
@@ -196,6 +202,7 @@ onUnmounted(() => {
               :prefix-icon="User"
               placeholder="请输入用户名"
               v-model="formData.username"
+              @keyup.enter="login"
             ></el-input>
           </el-form-item>
 
@@ -206,6 +213,7 @@ onUnmounted(() => {
               type="password"
               placeholder="请输入密码"
               v-model="formData.password"
+              @keyup.enter="login"
             ></el-input>
           </el-form-item>
 
@@ -246,8 +254,7 @@ onUnmounted(() => {
   // 左侧logo
   .background-img {
     background:
-      // url('@/assets/logo2.png') no-repeat 60% center / 240px auto,
-      url('@/assets/logo2.png') no-repeat 60% / 240px,
+      url('@/assets/logo2.png') no-repeat 60% center / 240px auto,
       url('@/assets/login_bg.jpg') no-repeat center / cover;
     border-radius: 0 20px 20px 0;
   }
@@ -257,11 +264,6 @@ onUnmounted(() => {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    // user-select: none;
-
-    // .title {
-    //   margin: 0 auto;
-    // }
 
     .button {
       width: 100%;

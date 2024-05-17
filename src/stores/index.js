@@ -3,17 +3,13 @@
 // ==================================================================
 
 import { createPinia } from 'pinia'
-
-// pinia-plugin-persistedstate插件
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-
 const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
-
 export default pinia
 
 // ==================================================================
-// 导出模块
+// pinia-plugin-persistedstate插件
 // ==================================================================
 
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+pinia.use(piniaPluginPersistedstate)
 export * from './modules/user'

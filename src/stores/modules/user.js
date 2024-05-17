@@ -1,13 +1,28 @@
-// 通用
+// 导入
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { userGetInfoService } from '@/api/user'
 
-// 数据
+// ==================================================
+// 用户信息
+// ==================================================
+
 export const useUserStore = defineStore(
   'userStore',
   () => {
+    // ==================================================
+    // 数据
+    // ==================================================
+
     // 登录token
     const token = ref('')
+
+    // 用户信息
+    const userInfo = ref({})
+
+    // ==================================================
+    // 函数
+    // ==================================================
 
     // 设置token
     const setToken = (newToken) => {
@@ -19,11 +34,30 @@ export const useUserStore = defineStore(
       token.value = ''
     }
 
+    // 获取用户信息
+    const getUserInfo = async () => {
+      const {
+        data: { data }
+      } = await userGetInfoService()
+      userInfo.value = data
+    }
+
+    // 修改用户信息
+    const setUserInfo = (newValue) => {
+      userInfo.value = newValue
+    }
+
+    // ==================================================
     // 导出
+    // ==================================================
+
     return {
       token,
       setToken,
-      removeToken
+      removeToken,
+      userInfo,
+      getUserInfo,
+      setUserInfo
     }
   },
   { persist: { key: 'big-event-userInfo' } }
