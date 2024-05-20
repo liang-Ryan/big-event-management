@@ -1,7 +1,7 @@
 // 导入
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { userGetInfoService } from '@/api/user'
+import { userGetInfo } from '@/api/user'
 
 // ==================================================
 // 用户信息
@@ -38,7 +38,7 @@ export const useUserStore = defineStore(
     const getUserInfo = async () => {
       const {
         data: { data }
-      } = await userGetInfoService()
+      } = await userGetInfo()
       userInfo.value = data
     }
 

@@ -1,7 +1,7 @@
 import request from '@/utils/request.js'
 
 // 注册申请
-export const userRegisterService = ({ username, password, repassword }) => {
+export const userRegister = ({ username, password, repassword }) => {
   return request.post('/api/reg', {
     username,
     password,
@@ -10,7 +10,7 @@ export const userRegisterService = ({ username, password, repassword }) => {
 }
 
 // 登录申请
-export const userLoginService = ({ username, password }) => {
+export const userLogi = ({ username, password }) => {
   return request.post('/api/login', {
     username,
     password
@@ -18,6 +18,6 @@ export const userLoginService = ({ username, password }) => {
 }
 
 // 获取用户信息
-export const userGetInfoService = () => {
+export const userGetInfo = () => {
   return request.get('/my/userinfo')
 }

@@ -84,7 +84,7 @@ const commandFn = (key) => {
         text-color="#fff"
         router
       >
-        <el-menu-item index="/article/channel">
+        <el-menu-item index="/article/cate">
           <el-icon><Management /></el-icon>
           <span>文章分类</span>
         </el-menu-item>

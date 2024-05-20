@@ -5,7 +5,7 @@ import { ElMessage } from 'element-plus'
 
 const instance = axios.create({
   baseURL: 'http://big-event-vue-api-t.itheima.net',
-  timeout: 10000
+  timeout: 5000
 })
 
 // 请求拦截器

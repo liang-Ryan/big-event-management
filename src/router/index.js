@@ -23,8 +23,8 @@ const router = createRouter({
           component: () => import('@/views/article/manage.vue')
         },
         {
-          path: 'article/channel',
-          component: () => import('@/views/article/channel.vue')
+          path: 'article/cate',
+          component: () => import('@/views/article/cate.vue')
         },
         {
           path: '/user/avatar',

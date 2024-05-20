@@ -3,7 +3,7 @@
 import { ref, watch, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores'
-import { userRegisterService, userLoginService } from '@/api/user'
+import { userRegister, userLogin } from '@/api/user'
 
 // 组件
 import { User, Lock } from '@element-plus/icons-vue'
@@ -79,7 +79,7 @@ const register = async () => {
 
   const {
     data: { message }
-  } = await userRegisterService(formData.value)
+  } = await userRegister(formData.value)
   ElMessage.success(message)
 
   isRegister.value = false
@@ -106,7 +106,7 @@ const login = async () => {
 
   const {
     data: { message, token }
-  } = await userLoginService(formData.value)
+  } = await userLogin(formData.value)
   ElMessage.success(message)
   userStore.setToken(token)
 
