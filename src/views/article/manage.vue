@@ -20,8 +20,8 @@ const loading = ref(false)
 // =============================
 
 const articleFormData = ref({
-  pagenum: 1, // 当前页面
-  pagesize: 5, // 当前页面文章数量
+  pagenum: 1, // 页码
+  pagesize: 5, // 每页文章数量
   cate_id: '', // 文章分类id
   state: '' // 文章发布状态
 })
@@ -127,6 +127,24 @@ const editAriticle = (item) => {
 // }
 
 // =============================
+// 文章搜索 / 重置
+// =============================
+
+// 搜索
+const searchArticle = () => {
+  articleFormData.value.pagenum = 1
+  getAriticleList()
+}
+
+// 重置
+const resetArticle = () => {
+  articleFormData.value.pagenum = 1
+  articleFormData.value.cate_id = ''
+  articleFormData.value.state = ''
+  getAriticleList()
+}
+
+// =============================
 // 分页
 // =============================
 
@@ -165,8 +183,8 @@ const changeCurrent = (value) => {
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary">搜索</el-button>
-        <el-button>重置</el-button>
+        <el-button type="primary" @click="searchArticle">搜索</el-button>
+        <el-button @click="resetArticle">重置</el-button>
       </el-form-item>
     </el-form>
 
