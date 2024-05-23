@@ -1,7 +1,7 @@
 <script setup>
 // 通用
 import { ref } from 'vue'
-import { articleDelCate, articleGetCateList } from '@/api/article'
+import { cateDelCate, cateGetCateList } from '@/api/cate'
 
 // 组件
 import { Edit, Delete } from '@element-plus/icons-vue'
@@ -26,7 +26,7 @@ const getCate = async () => {
 
   const {
     data: { data }
-  } = await articleGetCateList()
+  } = await cateGetCateList()
   cateList.value = data
 
   loading.value = false
@@ -61,7 +61,7 @@ const delCate = (cate) => {
     .then(async () => {
       const {
         data: { message }
-      } = await articleDelCate(cate.id)
+      } = await cateDelCate(cate.id)
       ElMessage.success(message)
       getCate()
     })

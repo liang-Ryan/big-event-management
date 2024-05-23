@@ -1,6 +1,6 @@
 <script setup>
 // 通用
-import { articleAddCate, articleUpdateCate } from '@/api/article'
+import { cateAddCate, cateUpdateCate } from '@/api/cate'
 import { ElMessage } from 'element-plus'
 import { ref, defineExpose, defineEmits } from 'vue'
 
@@ -15,7 +15,7 @@ const dialogVisible = ref(false)
 const emit = defineEmits(['submit'])
 
 // 表单
-const formData = ref({
+const cateFormData = ref({
   cate_name: '',
   cate_alias: ''
 })
@@ -38,7 +38,7 @@ const formRef = ref(null)
 // ==================================================
 
 const showDialog = (item) => {
-  formData.value = { ...item }
+  cateFormData.value = { ...item }
   dialogVisible.value = true
 }
 
@@ -53,17 +53,17 @@ defineExpose({
 const submit = async () => {
   await formRef.value.validate()
 
-  if (formData.value.id) {
+  if (cateFormData.value.id) {
     // 更新分类
     const {
       data: { message }
-    } = await articleUpdateCate(formData.value)
+    } = await cateUpdateCate(cateFormData.value)
     ElMessage.success(message)
   } else {
     // 添加分类
     const {
       data: { message }
-    } = await articleAddCate(formData.value)
+    } = await cateAddCate(cateFormData.value)
     ElMessage.success(message)
   }
 
@@ -77,27 +77,29 @@ const submit = async () => {
 <template>
   <el-dialog
     v-model="dialogVisible"
-    :title="formData.id ? '编辑分类' : '添加分类'"
+    :title="cateFormData.id ? '编辑分类' : '添加分类'"
     width="30%"
   >
-    <el-form :model="formData" :rules="rules" ref="formRef">
+    <el-form :model="cateFormData" :rules="rules" ref="formRef">
       <el-form-item label="分类名称" prop="cate_name">
         <el-input
           placeholder="请输入分类名称"
-          v-model="formData.cate_name"
+          v-model="cateFormData.cate_name"
         ></el-input>
       </el-form-item>
       <el-form-item label="分类别名" prop="cate_alias">
         <el-input
           placeholder="请输入分类别名"
-          v-model="formData.cate_alias"
+          v-model="cateFormData.cate_alias"
         ></el-input>
       </el-form-item>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button type="primary" @click="submit(formData)"> 确认 </el-button>
         <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="submit(cateFormData)">
+          确认
+        </el-button>
       </div>
     </template>
   </el-dialog>

@@ -10,7 +10,7 @@ export const userRegister = ({ username, password, repassword }) => {
 }
 
 // 登录申请
-export const userLogi = ({ username, password }) => {
+export const userLogin = ({ username, password }) => {
   return request.post('/api/login', {
     username,
     password
