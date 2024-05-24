@@ -21,3 +21,8 @@ export const userLoginAPI = ({ username, password }) => {
 export const userGetInfoAPI = () => {
   return request.get('/my/userinfo')
 }
+
+// 更新用户信息
+export const userUpdateAPI = (form) => {
+  return request.put('/my/userinfo', form)
+}
