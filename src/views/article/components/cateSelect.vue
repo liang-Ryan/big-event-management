@@ -1,7 +1,7 @@
 <script setup>
 // 通用
 import { ref, defineProps } from 'vue'
-import { cateGetCateList } from '@/api/cate'
+import { cateGetList } from '@/api/cate'
 
 // =============================
 // 数据
@@ -22,7 +22,7 @@ const cateList = ref([])
 const getcateList = async () => {
   const {
     data: { data }
-  } = await cateGetCateList()
+  } = await cateGetList()
   cateList.value = data
 }
 getcateList()

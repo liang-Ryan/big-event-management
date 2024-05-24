@@ -1,24 +1,19 @@
 <script setup>
 // 通用
-import { cateAddCate, cateUpdateCate } from '@/api/cate'
+import { cateAdd, cateUpdate } from '@/api/cate'
 import { ElMessage } from 'element-plus'
 import { ref, defineExpose, defineEmits } from 'vue'
 
 // ==================================================
-// 数据
+// 表单
 // ==================================================
 
-// 弹窗判断
-const dialogVisible = ref(false)
-
-// 父组件监听事件
-const emit = defineEmits(['submit'])
-
-// 表单
+// 表单数据
 const cateFormData = ref({
   cate_name: '',
   cate_alias: ''
 })
+// 表单验证规则
 const rules = {
   cate_name: [
     { required: true, message: '分类名称不能为空', trigger: 'blur' },
@@ -34,6 +29,12 @@ const rules = {
 const formRef = ref(null)
 
 // ==================================================
+// 开关
+// ==================================================
+
+const dialogVisible = ref(false) // 弹窗判断开关
+
+// ==================================================
 // 渲染弹窗
 // ==================================================
 
@@ -45,10 +46,12 @@ const showDialog = (item) => {
 defineExpose({
   showDialog
 })
-
 // ==================================================
 // 提交请求
 // ==================================================
+
+// 父组件监听事件
+const emit = defineEmits(['submit'])
 
 const submit = async () => {
   await formRef.value.validate()
@@ -57,13 +60,13 @@ const submit = async () => {
     // 更新分类
     const {
       data: { message }
-    } = await cateUpdateCate(cateFormData.value)
+    } = await cateUpdate(cateFormData.value)
     ElMessage.success(message)
   } else {
     // 添加分类
     const {
       data: { message }
-    } = await cateAddCate(cateFormData.value)
+    } = await cateAdd(cateFormData.value)
     ElMessage.success(message)
   }
 

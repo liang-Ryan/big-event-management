@@ -1,25 +1,22 @@
 <script setup>
 // 通用
 import { ref } from 'vue'
-import { articleGetList } from '@/api/article'
+import { articleDel, articleGetList } from '@/api/article'
 
 // 组件
 import { Edit, Delete } from '@element-plus/icons-vue'
-// import { ElMessageBox } from 'element-plus'
+import { ElMessageBox } from 'element-plus'
+import { dayjs } from 'element-plus'
 import cateSelect from './components/cateSelect.vue'
-import { formatTime } from '@/utils/format'
+import articleDrawer from './components/articleDrawer.vue'
 
-// =============================
-// 数据
-// =============================
-
-const loading = ref(false)
+const drawer = ref(null) // 获取抽屉组件
 
 // =============================
 // 表单数据
 // =============================
 
-const articleFormData = ref({
+const articleListFormData = ref({
   pagenum: 1, // 页码
   pagesize: 5, // 每页文章数量
   cate_id: '', // 文章分类id
@@ -27,104 +24,78 @@ const articleFormData = ref({
 })
 
 // =============================
+// 开关
+// =============================
+
+const loading = ref(false) // loading动画开关
+
+// =============================
 // 获取文章列表
 // =============================
 
-const articleList = ref([
-  {
-    Id: 5961,
-    title: '新的文章啊',
-    pub_date: '2022-07-10 14:53:52.604',
-    state: '已发布',
-    cate_name: '体育'
-  },
-  {
-    Id: 5962,
-    title: '新的文章啊',
-    pub_date: '2022-07-10 14:54:30.904',
-    state: '草稿',
-    cate_name: '体育'
-  },
-  {
-    Id: 5961,
-    title: '新的文章啊',
-    pub_date: '2022-07-10 14:53:52.604',
-    state: '已发布',
-    cate_name: '体育'
-  },
-  {
-    Id: 5962,
-    title: '新的文章啊',
-    pub_date: '2022-07-10 14:54:30.904',
-    state: '草稿',
-    cate_name: '体育'
-  },
-  {
-    Id: 5961,
-    title: '新的文章啊',
-    pub_date: '2022-07-10 14:53:52.604',
-    state: '已发布',
-    cate_name: '体育'
-  },
-  {
-    Id: 5962,
-    title: '新的文章啊',
-    pub_date: '2022-07-10 14:54:30.904',
-    state: '草稿',
-    cate_name: '体育'
-  },
-  {
-    Id: 5961,
-    title: '新的文章啊',
-    pub_date: '2022-07-10 14:53:52.604',
-    state: '已发布',
-    cate_name: '体育'
-  },
-  {
-    Id: 5962,
-    title: '新的文章啊',
-    pub_date: '2022-07-10 14:54:30.904',
-    state: '草稿',
-    cate_name: '体育'
-  }
-])
-const articleTotal = ref(8)
+const articleList = ref([])
+const articleTotal = ref(0)
 const getAriticleList = async () => {
   loading.value = true
 
   const {
     data: { data, total }
-  } = await articleGetList(articleFormData.value)
+  } = await articleGetList(articleListFormData.value)
   articleList.value = data
   articleTotal.value = total
 
   loading.value = false
 }
-// getAriticleList()
+getAriticleList()
+
+// =============================
+// 添加文章
+// =============================
+
+const addArticle = () => {
+  drawer.value.showDrawer({})
+}
 
 // =============================
 // 编辑文章
 // =============================
 
 const editAriticle = (item) => {
-  console.log(item)
+  drawer.value.showDrawer(item)
 }
 
 // =============================
 // 删除文章
 // =============================
 
-// const delAriticle = (item) => {
-//   ElMessageBox.confirm('确认删除这篇文章吗？', {
-//     confirmButtonText: '确认',
-//     cancelButtonText: '取消',
-//     type: 'warning'
-//   })
-//     .then(() => {
-//       ElMessage.success(message)
-//     })
-//     .catch(() => {})
-// }
+const delAriticle = (item) => {
+  ElMessageBox.confirm('确认删除这篇文章吗？', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(async () => {
+      const {
+        data: { message }
+      } = await articleDel(item.id)
+      ElMessage.success(message)
+      getAriticleList()
+    })
+    .catch(() => {})
+}
+
+// =============================
+// 添加 / 编辑文章请求 回调
+// =============================
+const submit = (isEdit) => {
+  if (isEdit === 'add') {
+    // 跳转最后一页
+    articleListFormData.value.pagenum = Math.ceil(
+      (articleTotal.value + 1) / articleListFormData.value.pagesize
+    )
+  }
+  getAriticleList()
+}
 
 // =============================
 // 文章搜索 / 重置
@@ -132,15 +103,15 @@ const editAriticle = (item) => {
 
 // 搜索
 const searchArticle = () => {
-  articleFormData.value.pagenum = 1
+  articleListFormData.value.pagenum = 1
   getAriticleList()
 }
 
 // 重置
 const resetArticle = () => {
-  articleFormData.value.pagenum = 1
-  articleFormData.value.cate_id = ''
-  articleFormData.value.state = ''
+  articleListFormData.value.pagenum = 1
+  articleListFormData.value.cate_id = ''
+  articleListFormData.value.state = ''
   getAriticleList()
 }
 
@@ -150,14 +121,14 @@ const resetArticle = () => {
 
 // 切换每页文章数量
 const changeSize = (value) => {
-  articleFormData.value.pagenum = 1 // 返回第一页
-  articleFormData.value.pagesize = value
+  articleListFormData.value.pagenum = 1 // 返回第一页
+  articleListFormData.value.pagesize = value
   getAriticleList()
 }
 
 // 切换页数
 const changeCurrent = (value) => {
-  articleFormData.value.pagenum = value
+  articleListFormData.value.pagenum = value
   getAriticleList()
 }
 </script>
@@ -166,17 +137,17 @@ const changeCurrent = (value) => {
   <!-- top -->
   <pageContent title="文章管理">
     <template #button>
-      <el-button>添加文章</el-button>
+      <el-button type="primary" @click="addArticle">添加文章</el-button>
     </template>
 
     <!-- form -->
     <el-form inline>
       <el-form-item label="文章分类">
-        <cateSelect v-model="articleFormData.cate_id"></cateSelect>
+        <cateSelect v-model="articleListFormData.cate_id"></cateSelect>
       </el-form-item>
 
       <el-form-item label="发布状态">
-        <el-select v-model="articleFormData.state">
+        <el-select v-model="articleListFormData.state">
           <el-option label="已发布" value="已发布"></el-option>
           <el-option label="草稿" value="草稿"></el-option>
         </el-select>
@@ -198,7 +169,7 @@ const changeCurrent = (value) => {
       <el-table-column label="分类" prop="cate_name"></el-table-column>
       <el-table-column label="发表时间">
         <template #default="{ row }">
-          {{ formatTime(row.pub_date) }}
+          {{ dayjs(row.pub_date).format('YYYY年MM月DD日') }}
         </template>
       </el-table-column>
       <el-table-column label="状态" prop="state"></el-table-column>
@@ -211,15 +182,21 @@ const changeCurrent = (value) => {
             circle
             @click="editAriticle(row)"
           ></el-button>
-          <el-button type="danger" plain :icon="Delete" circle></el-button>
+          <el-button
+            type="danger"
+            plain
+            :icon="Delete"
+            circle
+            @click="delAriticle(row)"
+          ></el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <!-- 分页 -->
     <el-pagination
-      v-model:current-page="articleFormData.pagenum"
-      v-model:page-size="articleFormData.pagesize"
+      v-model:current-page="articleListFormData.pagenum"
+      v-model:page-size="articleListFormData.pagesize"
       :page-sizes="[5, 10, 20, 50]"
       :background="true"
       layout="sizes, prev, pager, next, jumper, total"
@@ -228,6 +205,9 @@ const changeCurrent = (value) => {
       @current-change="changeCurrent"
       style="margin-top: 10px; justify-content: flex-end"
     />
+
+    <!-- 抽屉 -->
+    <articleDrawer ref="drawer" @submit="submit"></articleDrawer>
   </pageContent>
 </template>
 

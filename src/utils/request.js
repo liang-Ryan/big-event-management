@@ -3,8 +3,10 @@ import router from '@/router'
 import { useUserStore } from '@/stores'
 import { ElMessage } from 'element-plus'
 
+const baseURL = 'http://big-event-vue-api-t.itheima.net'
+
 const instance = axios.create({
-  baseURL: 'http://big-event-vue-api-t.itheima.net',
+  baseURL: baseURL,
   timeout: 5000
 })
 
@@ -47,3 +49,4 @@ instance.interceptors.response.use(
 )
 
 export default instance
+export { baseURL }
