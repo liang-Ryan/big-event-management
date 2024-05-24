@@ -1,7 +1,7 @@
 import request from '@/utils/request.js'
 
 // 获取文章列表
-export const articleGetList = (form) => {
+export const articleGetListAPI = (form) => {
   return request.get('/my/article/list', {
     params: {
       ...form
@@ -10,12 +10,12 @@ export const articleGetList = (form) => {
 }
 
 // 发布文章
-export const articleAdd = (form) => {
+export const articleAddAPI = (form) => {
   return request.post('/my/article/add', form)
 }
 
 // 获取文章详情
-export const articleGet = (id) => {
+export const articleGetAPI = (id) => {
   return request.get('/my/article/info', {
     params: {
       id
@@ -24,12 +24,12 @@ export const articleGet = (id) => {
 }
 
 // 更新文章详情
-export const articleUpdata = (form) => {
+export const articleUpdataAPI = (form) => {
   return request.put('/my/article/info', form)
 }
 
 // 删除文章
-export const articleDel = (id) => {
+export const articleDelAPI = (id) => {
   return request.delete('/my/article/info', {
     params: {
       id

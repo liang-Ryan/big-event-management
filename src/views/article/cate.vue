@@ -1,20 +1,23 @@
 <script setup>
 // 通用
 import { ref } from 'vue'
-import { cateDel, cateGetList } from '@/api/cate'
 
 // 组件
-import { Edit, Delete } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
+import { Edit, Delete } from '@element-plus/icons-vue'
+
 import editCateDialog from './components/editCateDialog.vue'
 
-const dialog = ref(null) // 文章操作弹窗组件
+// api
+import { cateDelAPI, cateGetListAPI } from '@/api/cate'
 
 // ==================================================
 // 数据
 // ==================================================
 
 const loading = ref(false) // loading动画
+
+const dialog = ref(null) // 文章操作弹窗组件
 
 // ==================================================
 // 获取分类
@@ -26,7 +29,7 @@ const getCate = async () => {
 
   const {
     data: { data }
-  } = await cateGetList()
+  } = await cateGetListAPI()
   cateList.value = data
 
   loading.value = false
@@ -61,7 +64,7 @@ const delCate = (cate) => {
     .then(async () => {
       const {
         data: { message }
-      } = await cateDel(cate.id)
+      } = await cateDelAPI(cate.id)
       ElMessage.success(message)
       getCate()
     })

@@ -1,14 +1,22 @@
 <script setup>
 // 通用
-import { ref } from 'vue'
+import axios from 'axios'
+import { ref, defineExpose, defineEmits } from 'vue'
 
 // 组件
-import cateSelect from './cateSelect.vue'
+import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 
-// vue-quill
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
+
+import { baseURL } from '@/utils/request'
+
+import cateSelect from './cateSelect.vue'
+
+// api
+import { articleGetAPI, articleUpdataAPI, articleAddAPI } from '@/api/article'
+
 const quillEditorRef = ref(null)
 
 // =============================
@@ -76,8 +84,6 @@ const toFormData = (formData, form) => {
 // 图片网络地址转为 file 对象
 // =============================
 
-import axios from 'axios'
-
 const imageUrlToFile = async (imageUrl, filename) => {
   try {
     // 下载图片
@@ -104,17 +110,13 @@ const imageUrlToFile = async (imageUrl, filename) => {
 // 渲染抽屉
 // =============================
 
-import { defineExpose } from 'vue'
-import { articleGet, articleUpdata } from '@/api/article'
-import { baseURL } from '@/utils/request'
-
 const showDrawer = async (item) => {
   if (item.id) {
     isEdit.value = true
 
     const {
       data: { data }
-    } = await articleGet(item.id)
+    } = await articleGetAPI(item.id)
 
     articleFormDate.value.id = data.id
     articleFormDate.value.title = data.title
@@ -151,10 +153,6 @@ const selectImage = (image) => {
 // 提交请求
 // =============================
 
-import { defineEmits } from 'vue'
-import { articleAdd } from '@/api/article'
-import { ElMessage } from 'element-plus'
-
 const emit = defineEmits(['submit'])
 
 const submit = async (state) => {
@@ -175,7 +173,7 @@ const submit = async (state) => {
     await formRef.value.validate()
     const {
       data: { message }
-    } = await articleUpdata(formData)
+    } = await articleUpdataAPI(formData)
     ElMessage.success(message)
 
     emit('submit', 'edit')
@@ -188,7 +186,7 @@ const submit = async (state) => {
     await formRef.value.validate()
     const {
       data: { message }
-    } = await articleAdd(formData)
+    } = await articleAddAPI(formData)
     ElMessage.success(message)
 
     emit('submit', 'add')

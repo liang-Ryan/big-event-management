@@ -3,10 +3,12 @@
 import { ref, watch, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores'
-import { userRegister, userLogin } from '@/api/user'
 
 // 组件
 import { User, Lock } from '@element-plus/icons-vue'
+
+// api
+import { userRegisterAPI, userLoginAPI } from '@/api/user'
 
 // 注册
 const router = useRouter()
@@ -43,7 +45,7 @@ const formData = ref({
 const remember = ref(false)
 
 // =================================================
-// 注册
+// 注册功能
 // =================================================
 
 // 注册校验规则
@@ -82,14 +84,14 @@ const register = async () => {
 
   const {
     data: { message }
-  } = await userRegister(formData.value)
+  } = await userRegisterAPI(formData.value)
   ElMessage.success(message)
 
   isRegister.value = false
 }
 
 // =================================================
-// 登录
+// 登录功能
 // =================================================
 
 // 登录校验规则
@@ -109,7 +111,7 @@ const login = async () => {
 
   const {
     data: { message, token }
-  } = await userLogin(formData.value)
+  } = await userLoginAPI(formData.value)
   ElMessage.success(message)
   userStore.setToken(token)
   if (remember.value === true) {

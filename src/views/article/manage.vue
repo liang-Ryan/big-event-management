@@ -1,14 +1,16 @@
 <script setup>
 // 通用
 import { ref } from 'vue'
-import { articleDel, articleGetList } from '@/api/article'
 
 // 组件
+import { dayjs, ElMessageBox } from 'element-plus'
 import { Edit, Delete } from '@element-plus/icons-vue'
-import { ElMessageBox } from 'element-plus'
-import { dayjs } from 'element-plus'
+
 import cateSelect from './components/cateSelect.vue'
 import articleDrawer from './components/articleDrawer.vue'
+
+// api
+import { articleDelAPI, articleGetListAPI } from '@/api/article'
 
 const drawer = ref(null) // 获取抽屉组件
 
@@ -40,7 +42,7 @@ const getAriticleList = async () => {
 
   const {
     data: { data, total }
-  } = await articleGetList(articleListFormData.value)
+  } = await articleGetListAPI(articleListFormData.value)
   articleList.value = data
   articleTotal.value = total
 
@@ -77,7 +79,7 @@ const delAriticle = (item) => {
     .then(async () => {
       const {
         data: { message }
-      } = await articleDel(item.id)
+      } = await articleDelAPI(item.id)
       ElMessage.success(message)
       getAriticleList()
     })

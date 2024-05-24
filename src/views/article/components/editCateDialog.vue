@@ -1,8 +1,12 @@
 <script setup>
 // 通用
-import { cateAdd, cateUpdate } from '@/api/cate'
-import { ElMessage } from 'element-plus'
 import { ref, defineExpose, defineEmits } from 'vue'
+
+// 组件
+import { ElMessage } from 'element-plus'
+
+// api
+import { cateAddAPI, cateUpdateAPI } from '@/api/cate'
 
 // ==================================================
 // 表单
@@ -60,21 +64,19 @@ const submit = async () => {
     // 更新分类
     const {
       data: { message }
-    } = await cateUpdate(cateFormData.value)
+    } = await cateUpdateAPI(cateFormData.value)
     ElMessage.success(message)
   } else {
     // 添加分类
     const {
       data: { message }
-    } = await cateAdd(cateFormData.value)
+    } = await cateAddAPI(cateFormData.value)
     ElMessage.success(message)
   }
 
   emit('submit')
   dialogVisible.value = false
 }
-
-// ==================================================
 </script>
 
 <template>
