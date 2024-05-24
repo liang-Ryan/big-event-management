@@ -10,10 +10,6 @@ import { User, Lock } from '@element-plus/icons-vue'
 // api
 import { userRegisterAPI, userLoginAPI } from '@/api/user'
 
-// 注册
-const router = useRouter()
-const userStore = useUserStore()
-
 // =================================================
 // 切换注册和登录
 // =================================================
@@ -93,6 +89,9 @@ const register = async () => {
 // =================================================
 // 登录功能
 // =================================================
+
+const router = useRouter()
+const userStore = useUserStore()
 
 // 登录校验规则
 const loginRules = {

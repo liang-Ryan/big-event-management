@@ -33,3 +33,8 @@ export const userUpdataAvatarAPI = (image) => {
     avatar: image
   })
 }
+
+// 更新用户密码
+export const userUpdataPasswordAPI = (form) => {
+  return request.patch('/my/updatepwd', form)
+}

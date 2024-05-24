@@ -42,7 +42,7 @@ const rules = {
     { required: true, message: '昵称不能为空', trigger: 'blur' },
     {
       pattern: /^\S{2,10}$/,
-      message: '昵称长度应为2~10个非空字符',
+      message: '昵称长度应为 2~10个 非空字符',
       trigger: 'blur'
     }
   ],
