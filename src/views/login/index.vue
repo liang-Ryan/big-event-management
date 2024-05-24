@@ -26,11 +26,11 @@ watch(isRegister, () => {
 })
 
 // =================================================
-// 数据
+// 表单
 // =================================================
 
 // 获取表单实例
-const form = ref()
+const form = ref(null)
 
 // 表单数据
 const formData = ref({
@@ -38,6 +38,9 @@ const formData = ref({
   password: '',
   repassword: ''
 })
+
+// 记住账号密码
+const remember = ref(false)
 
 // =================================================
 // 注册
@@ -109,6 +112,12 @@ const login = async () => {
   } = await userLogin(formData.value)
   ElMessage.success(message)
   userStore.setToken(token)
+  if (remember.value === true) {
+    saveLocalStorage()
+  } else {
+    if (localStorage.getItem('big-event-login'))
+      localStorage.removeItem('big-event-login')
+  }
 
   loginTimeout.value = setTimeout(() => {
     router.push('/')
@@ -116,7 +125,29 @@ const login = async () => {
 }
 
 // =================================================
+// 本地存储
 // =================================================
+
+// 存储至本地
+const saveLocalStorage = () => {
+  localStorage.setItem(
+    'big-event-login',
+    JSON.stringify({
+      username: formData.value.username,
+      password: formData.value.password
+    })
+  )
+}
+
+// 读取本地
+const loadLocalStorage = () => {
+  const temp = JSON.parse(localStorage.getItem('big-event-login'))
+  remember.value = true
+  formData.value.username = temp.username
+  formData.value.password = temp.password
+  console.log(temp)
+}
+if (localStorage.getItem('big-event-login')) loadLocalStorage()
 </script>
 
 <template>
@@ -219,7 +250,7 @@ const login = async () => {
 
           <el-form-item class="flex">
             <div class="flex">
-              <el-checkbox>记住我</el-checkbox>
+              <el-checkbox v-model="remember">记住我</el-checkbox>
               <el-link type="primary" :underline="false">忘记密码？</el-link>
             </div>
           </el-form-item>
