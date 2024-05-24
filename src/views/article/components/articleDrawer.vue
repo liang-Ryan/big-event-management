@@ -198,12 +198,7 @@ const submit = async (state) => {
 </script>
 
 <template>
-  <el-drawer
-    v-model="drawerVisible"
-    :title="isEdit ? '修改文章' : '添加文章'"
-    :before-close="closeDrawer"
-    size="50%"
-  >
+  <el-drawer v-model="drawerVisible" :before-close="closeDrawer" size="50%">
     <el-form
       :model="articleFormDate"
       :rules="rules"
@@ -255,11 +250,6 @@ const submit = async (state) => {
 </template>
 
 <style lang="scss" scoped>
-.drawer {
-  font-size: 18px;
-  color: black;
-}
-
 // 上传图片
 .avatar-uploader {
   :deep() {

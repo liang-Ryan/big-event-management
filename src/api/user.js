@@ -26,3 +26,10 @@ export const userGetInfoAPI = () => {
 export const userUpdateAPI = (form) => {
   return request.put('/my/userinfo', form)
 }
+
+// 更新用户头像
+export const userUpdataAvatarAPI = (image) => {
+  return request.patch('/my/update/avatar', {
+    avatar: image
+  })
+}
