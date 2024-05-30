@@ -7,7 +7,7 @@ import { useUserStore } from '@/stores'
 import { ElMessage } from 'element-plus'
 
 // api
-import { userUpdateAPI } from '@/api/user'
+import { userPostInfoAPI } from '@/api/user'
 
 // =============================
 // 数据
@@ -64,7 +64,7 @@ const updateProfile = async () => {
   await formRef.value.validate()
   const {
     data: { message }
-  } = await userUpdateAPI(userProfileFormData.value)
+  } = await userPostInfoAPI(userProfileFormData.value)
   getUserInfo()
   ElMessage.success(message)
 }

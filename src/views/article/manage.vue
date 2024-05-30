@@ -10,7 +10,7 @@ import cateSelect from './components/cateSelect.vue'
 import articleDrawer from './components/articleDrawer.vue'
 
 // api
-import { articleDelAPI, articleGetListAPI } from '@/api/article'
+import { articleDeleteAPI, articleGetListAPI } from '@/api/article'
 
 const drawer = ref(null) // 获取抽屉组件
 
@@ -79,7 +79,7 @@ const delAriticle = (item) => {
     .then(async () => {
       const {
         data: { message }
-      } = await articleDelAPI(item.id)
+      } = await articleDeleteAPI(item.id)
       ElMessage.success(message)
       getAriticleList()
     })

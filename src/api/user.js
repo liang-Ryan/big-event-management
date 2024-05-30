@@ -1,7 +1,7 @@
 import request from '@/utils/request.js'
 
 // 注册申请
-export const userRegisterAPI = ({ username, password, repassword }) => {
+export const userPostRegisterAPI = ({ username, password, repassword }) => {
   return request.post('/api/reg', {
     username,
     password,
@@ -10,7 +10,7 @@ export const userRegisterAPI = ({ username, password, repassword }) => {
 }
 
 // 登录申请
-export const userLoginAPI = ({ username, password }) => {
+export const userPostLoginAPI = ({ username, password }) => {
   return request.post('/api/login', {
     username,
     password
@@ -23,18 +23,18 @@ export const userGetInfoAPI = () => {
 }
 
 // 更新用户信息
-export const userUpdateAPI = (form) => {
+export const userPostInfoAPI = (form) => {
   return request.put('/my/userinfo', form)
 }
 
 // 更新用户头像
-export const userUpdataAvatarAPI = (image) => {
+export const userPatchAvatarAPI = (image) => {
   return request.patch('/my/update/avatar', {
     avatar: image
   })
 }
 
 // 更新用户密码
-export const userUpdataPasswordAPI = (form) => {
+export const userPatchPasswordAPI = (form) => {
   return request.patch('/my/updatepwd', form)
 }

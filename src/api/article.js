@@ -10,12 +10,12 @@ export const articleGetListAPI = (form) => {
 }
 
 // 发布文章
-export const articleAddAPI = (form) => {
+export const articlePostAddAPI = (form) => {
   return request.post('/my/article/add', form)
 }
 
 // 获取文章详情
-export const articleGetAPI = (id) => {
+export const articleGetInfoAPI = (id) => {
   return request.get('/my/article/info', {
     params: {
       id
@@ -24,12 +24,12 @@ export const articleGetAPI = (id) => {
 }
 
 // 更新文章详情
-export const articleUpdataAPI = (form) => {
+export const articlePutUpdataAPI = (form) => {
   return request.put('/my/article/info', form)
 }
 
 // 删除文章
-export const articleDelAPI = (id) => {
+export const articleDeleteAPI = (id) => {
   return request.delete('/my/article/info', {
     params: {
       id

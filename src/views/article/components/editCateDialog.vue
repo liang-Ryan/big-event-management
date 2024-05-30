@@ -6,7 +6,7 @@ import { ref, defineExpose, defineEmits } from 'vue'
 import { ElMessage } from 'element-plus'
 
 // api
-import { cateAddAPI, cateUpdateAPI } from '@/api/cate'
+import { catePostAddAPI, catePutUpdateAPI } from '@/api/cate'
 
 // ==================================================
 // 表单
@@ -64,13 +64,13 @@ const submit = async () => {
     // 更新分类
     const {
       data: { message }
-    } = await cateUpdateAPI(cateFormData.value)
+    } = await catePutUpdateAPI(cateFormData.value)
     ElMessage.success(message)
   } else {
     // 添加分类
     const {
       data: { message }
-    } = await cateAddAPI(cateFormData.value)
+    } = await catePostAddAPI(cateFormData.value)
     ElMessage.success(message)
   }
 

@@ -8,7 +8,7 @@ import { useUserStore } from '@/stores'
 import { ElMessage } from 'element-plus'
 
 // api
-import { userUpdataPasswordAPI } from '@/api/user'
+import { userPatchPasswordAPI } from '@/api/user'
 
 // =============================
 // 数据
@@ -87,7 +87,7 @@ const updataPassword = async () => {
   await passwordFormRef.value.validate()
   const {
     data: { message }
-  } = await userUpdataPasswordAPI(passwordForm.value)
+  } = await userPatchPasswordAPI(passwordForm.value)
   ElMessage.success(message)
 
   // 退出重新登录

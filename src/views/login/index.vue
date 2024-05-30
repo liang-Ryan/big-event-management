@@ -8,7 +8,7 @@ import { useUserStore } from '@/stores'
 import { User, Lock } from '@element-plus/icons-vue'
 
 // api
-import { userRegisterAPI, userLoginAPI } from '@/api/user'
+import { userPostRegisterAPI, userPostLoginAPI } from '@/api/user'
 
 // =================================================
 // 切换注册和登录
@@ -80,7 +80,7 @@ const register = async () => {
 
   const {
     data: { message }
-  } = await userRegisterAPI(formData.value)
+  } = await userPostRegisterAPI(formData.value)
   ElMessage.success(message)
 
   isRegister.value = false
@@ -110,7 +110,7 @@ const login = async () => {
 
   const {
     data: { message, token }
-  } = await userLoginAPI(formData.value)
+  } = await userPostLoginAPI(formData.value)
   ElMessage.success(message)
   userStore.setToken(token)
   if (remember.value === true) {

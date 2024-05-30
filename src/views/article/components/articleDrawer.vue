@@ -15,7 +15,11 @@ import { baseURL } from '@/utils/request'
 import cateSelect from './cateSelect.vue'
 
 // api
-import { articleGetAPI, articleUpdataAPI, articleAddAPI } from '@/api/article'
+import {
+  articleGetInfoAPI,
+  articlePutUpdataAPI,
+  articlePostAddAPI
+} from '@/api/article'
 
 const quillEditorRef = ref(null)
 
@@ -116,7 +120,7 @@ const showDrawer = async (item) => {
 
     const {
       data: { data }
-    } = await articleGetAPI(item.id)
+    } = await articleGetInfoAPI(item.id)
 
     articleFormDate.value.id = data.id
     articleFormDate.value.title = data.title
@@ -173,7 +177,7 @@ const submit = async (state) => {
     await formRef.value.validate()
     const {
       data: { message }
-    } = await articleUpdataAPI(formData)
+    } = await articlePutUpdataAPI(formData)
     ElMessage.success(message)
 
     emit('submit', 'edit')
@@ -186,7 +190,7 @@ const submit = async (state) => {
     await formRef.value.validate()
     const {
       data: { message }
-    } = await articleAddAPI(formData)
+    } = await articlePostAddAPI(formData)
     ElMessage.success(message)
 
     emit('submit', 'add')

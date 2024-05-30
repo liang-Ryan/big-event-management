@@ -9,7 +9,7 @@ import { Edit, Delete } from '@element-plus/icons-vue'
 import editCateDialog from './components/editCateDialog.vue'
 
 // api
-import { cateDelAPI, cateGetListAPI } from '@/api/cate'
+import { cateDeleteAPI, cateGetListAPI } from '@/api/cate'
 
 // ==================================================
 // 数据
@@ -64,7 +64,7 @@ const delCate = (cate) => {
     .then(async () => {
       const {
         data: { message }
-      } = await cateDelAPI(cate.id)
+      } = await cateDeleteAPI(cate.id)
       ElMessage.success(message)
       getCate()
     })
