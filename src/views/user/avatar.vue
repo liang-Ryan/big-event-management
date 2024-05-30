@@ -8,7 +8,7 @@ import { ElMessage } from 'element-plus'
 import { Plus, Upload } from '@element-plus/icons-vue'
 
 // api
-import { userUpdataAvatarAPI } from '@/api/user'
+import { userPatchAvatarAPI } from '@/api/user'
 
 // =============================
 // 数据
@@ -44,7 +44,7 @@ const selectImage = (image) => {
 const updataAvatar = async () => {
   const {
     data: { message }
-  } = await userUpdataAvatarAPI(avatar.value)
+  } = await userPatchAvatarAPI(avatar.value)
   ElMessage.success(message)
   getUserInfo()
 }
