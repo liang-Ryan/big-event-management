@@ -1,35 +1,27 @@
-# big-event-management
+# 项目介绍
+项目基于vue3，使用vite创建
 
-This template should help get you started developing with Vue 3 in Vite.
+使用pnpm管理，并使用了以下包
+* vite （构建工具）
+* pinia （状态管理）
+* vue-router （路由管理）
+* element-plus （组件库）
+* axios （网络请求）
+* eslint （代码格式化）
+* prettier （代码格式化）
+* husky （git钩子工具）
+* scss （样式）
 
-## Recommended IDE Setup
+### 调试
+指令：pnpm run dev  
+用户名：1311111111
+密码：123456
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+### 项目难点
+* 实现上传图片的预览
+* 实现文章表单内容的交互，如新建文章、编辑文章，以及表单内容的验证规则
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-pnpm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-pnpm dev
-```
-
-### Compile and Minify for Production
-
-```sh
-pnpm build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-pnpm lint
-```
+### 项目亮点
+* 通过弹窗的模式实现新建文章和编辑文章功能，并封装为可复用的组件，提高了开发效率
+* 在登录页面实现登录和注册功能，减少页面跳转导致的页面重复加载问题
+* 使用FileReader类将图片转为base64格式，实现本地图片预览
